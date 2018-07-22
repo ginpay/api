@@ -1,5 +1,6 @@
 package com.ginpay.ginpayapi.controller
 
+import com.ginpay.ginpayapi.model.Chat
 import com.ginpay.ginpayapi.model.Destination
 import com.ginpay.ginpayapi.model.Request
 import com.ginpay.ginpayapi.model.User
@@ -8,9 +9,14 @@ import com.ginpay.ginpayapi.repository.RequestRepository
 import com.ginpay.ginpayapi.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import com.ibm.watson.developer_cloud.assistant.v1.Assistant
+import com.ibm.watson.developer_cloud.assistant.v1.model.InputData
+import com.ibm.watson.developer_cloud.assistant.v1.model.MessageOptions
+
 
 @RestController
 @RequestMapping("/")
+@CrossOrigin
 class GinpayController @Autowired constructor(private val userRepository: UserRepository, private val destinationRepository: DestinationRepository, private val requestRepository: RequestRepository){
 
     @GetMapping("/api/destinations")
@@ -35,9 +41,20 @@ class GinpayController @Autowired constructor(private val userRepository: UserRe
     }
 
     @PostMapping("/api/message")
-    fun createMessage(@RequestBody message: String): String {
-        // TODO Watson API Call
-        return "{'message': 'hoge'}"
+    fun createMessage(@RequestBody caht: Chat): String {
+        val service = Assistant("2018-07-10")
+        service.setUsernameAndPassword("name", "pass")
+
+        val workspaceId = "workspace_id"
+
+        var newMessageOptions = MessageOptions.Builder()
+                .workspaceId(workspaceId)
+                .input(InputData.Builder(caht.getMessage()).build())
+                .build()
+
+        var response = service.message(newMessageOptions).execute()
+
+        return "{'message': '" + response.output.text.get(0) + "'}"
     }
 
     @PostMapping("/api/evaluation")
