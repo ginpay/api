@@ -16,36 +16,41 @@ import com.ibm.watson.developer_cloud.assistant.v1.model.MessageOptions
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin
 class GinpayController @Autowired constructor(private val userRepository: UserRepository, private val destinationRepository: DestinationRepository, private val requestRepository: RequestRepository){
 
     @GetMapping("/api/destinations")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun getDestination(): List<Destination> = destinationRepository.findAll()
 
     @GetMapping("/api/requests")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun getRequests(): List<Request> = requestRepository.findAll()
 
     @GetMapping("/api/user")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun getUser(@RequestParam(value = "id") id: String): User = userRepository.getOne(id)
 
     @PostMapping("/api/request")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun createRequest(@RequestBody request: Request): String {
         requestRepository.save(request)
         return "{'status': 'success'}"
     }
 
     @PostMapping("/api/user")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun createUser(@RequestBody user: User): String {
         userRepository.save(user)
         return "{'status': 'success'}"
     }
 
     @PostMapping("/api/message")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun createMessage(@RequestBody caht: Chat): String {
         val service = Assistant("2018-07-10")
-        service.setUsernameAndPassword("name", "pass")
+        service.setUsernameAndPassword("798fb133-2e95-44ed-95a6-228e6c1ccfa2", "htLnWgal0GwS")
 
-        val workspaceId = "workspace_id"
+        val workspaceId = "9ad0dfe9-a5c3-4ede-be69-ca0d2c119792"
 
         var newMessageOptions = MessageOptions.Builder()
                 .workspaceId(workspaceId)
@@ -58,6 +63,7 @@ class GinpayController @Autowired constructor(private val userRepository: UserRe
     }
 
     @PostMapping("/api/evaluation")
+    @CrossOrigin(origins = ["http://localhost:3000"])
     fun createEvaluation(@RequestBody evaluation: String): String {
         println(evaluation)
         return "{'status': 'success'}"
