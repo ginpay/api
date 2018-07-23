@@ -21,7 +21,7 @@ USE `ginpay` ;
 -- Table `ginpay`.`chat`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ginpay`.`chat` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `message` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -43,7 +43,7 @@ ENGINE = InnoDB;
 -- Table `ginpay`.`destination`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ginpay`.`destination` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(30) NOT NULL,
   `image` TEXT NULL,
   `point` DOUBLE NOT NULL,
@@ -53,43 +53,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ginpay`.`tag`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ginpay`.`tag` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `ginpay`.`user_travel`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ginpay`.`user_travel` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(91) NOT NULL,
-  `tag_id` INT NOT NULL,
   `destination_id` INT NOT NULL,
   `message` VARCHAR(100) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_travel_user_idx` (`user_id` ASC),
-  INDEX `fk_user_travel_tag_idx` (`tag_id` ASC),
-  INDEX `fk_user_travel_destination_idx` (`destination_id` ASC),
-  CONSTRAINT `fk_user_travel_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `ginpay`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_travel_tag`
-    FOREIGN KEY (`tag_id`)
-    REFERENCES `ginpay`.`tag` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_travel_destination`
-    FOREIGN KEY (`destination_id`)
-    REFERENCES `ginpay`.`destination` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `fk_user_travel_destination_idx` (`destination_id` ASC)
+  )
 ENGINE = InnoDB;
 
 
@@ -97,24 +71,14 @@ ENGINE = InnoDB;
 -- Table `ginpay`.`evaluation`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ginpay`.`evaluation` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `recommender_id` INT NULL,
   `user_id` VARCHAR(91) NOT NULL,
   `destination_id` INT NOT NULL,
   `evaluationcol` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_evaluation_user_idx` (`user_id` ASC),
-  INDEX `fk_evaluation_destination_idx` (`destination_id` ASC),
-  CONSTRAINT `fk_evaluation_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `ginpay`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_evaluation_destination`
-    FOREIGN KEY (`destination_id`)
-    REFERENCES `ginpay`.`destination` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `fk_evaluation_destination_idx` (`destination_id` ASC))
 ENGINE = InnoDB;
 
 
