@@ -11,14 +11,14 @@ class Destination (
         var id: Int = 0,
 
         @Column
-        private var name: String = "",
+        var name: String = "",
 
         @Column
-        private var image: String? = null,
+        var image: String? = null,
 
         @Column
-        private var point: Double? = 0.0,
+        var point: Double? = 0.0,
 
         @Column
-        private var description: String? = null
+        var description: String? = null
 )
